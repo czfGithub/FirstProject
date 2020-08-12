@@ -58,7 +58,7 @@ class Popup extends StatelessWidget{
           top: top,),
       ],
     ),
-      onTap: (){ //点击空白处
+      onTap: (){ //点击空白处关闭
         Navigator.of(context).pop();
       },
     ),);
