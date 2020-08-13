@@ -6,6 +6,7 @@ import 'shader_mask_page.dart';
 import 'drop_down_botton_page.dart';
 import 'package:popup_window/popup_window.dart';
 import 'package:flutterapp/Popup.dart';
+import 'group_manage.dart';
 
 void main(){
   runApp(MyApp());
@@ -250,6 +251,8 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShaderMaskPage()));
                         }else if(value == 2){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => DropDownButtonPage()));
+                        }else if(value == 3){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => GroupManage()));
                         }
                         Scaffold.of(context).showSnackBar(SnackBar(
                           content: Text(actions[value]),
