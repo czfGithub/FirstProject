@@ -27,7 +27,7 @@ class PopRoute extends PopupRoute{
 
 class Popup extends StatelessWidget{
   final Widget child;
-  final Function onClick; //点击child事件
+  final Function onClick; //点击事件
   final double left; //距离左边位置
   final double top; //距离上面位置
   final List<Widget> items;
