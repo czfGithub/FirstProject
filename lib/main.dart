@@ -1,4 +1,15 @@
+import 'dart:async';
+import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui';
+
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutterapp/about_us.dart';
+import 'package:flutterapp/mark.dart';
+import 'package:flutterapp/page_view.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 import 'widget/widget_w_popup_menu.dart';
 import 'popup_menu_botton_page.dart';
@@ -7,6 +18,8 @@ import 'drop_down_botton_page.dart';
 import 'package:popup_window/popup_window.dart';
 import 'package:flutterapp/Popup.dart';
 import 'group_manage.dart';
+import 'package:qr_flutter/qr_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 
 void main(){
   runApp(MyApp());
@@ -51,8 +64,8 @@ class PopupItem extends StatelessWidget{
             ),
             if(lineVisible) Container(
               margin: EdgeInsets.only(left: 20,right: 20),
-              height: 0.5,color:
-            Color.fromRGBO(248, 96, 144, 1),
+              height: 0.5,
+              color: Color.fromRGBO(248, 96, 144, 1),
             ),
           ],
         ),
@@ -107,6 +120,76 @@ class PopupRoutePage extends StatefulWidget {
 class _PopupRoutePageState extends State<PopupRoutePage> {
 
   GlobalKey anchorKey = GlobalKey();
+  //首先在你需要生成二维码页面中声明一个GlobalKey
+  GlobalKey _globalKey = new GlobalKey();
+
+  Timer _countdownTimer;
+  String _codeCountdownStr = '获取验证码';
+  int _countdownNum = 59;
+  Future<File> _imageFile;
+
+  void reGetCountdown() {
+    setState(() {
+      if (_countdownTimer != null) {
+        return;
+      }
+      // Timer的第一秒倒计时是有一点延迟的，为了立刻显示效果可以添加下一行。
+      _codeCountdownStr = '${_countdownNum--}重新获取';
+      _countdownTimer =
+      new Timer.periodic(new Duration(seconds: 1), (timer) {
+        setState(() {
+          if (_countdownNum > 0) {
+            _codeCountdownStr = '${_countdownNum--}重新获取';
+          } else {
+            _codeCountdownStr = '获取验证码';
+            _countdownNum = 59;
+            _countdownTimer.cancel();
+            _countdownTimer = null;
+          }
+        });
+      });
+    });
+  }
+
+  Future<Uint8List> _widgetShot () async {
+    RenderRepaintBoundary boundary = _globalKey.currentContext.findRenderObject();
+    var image = await boundary.toImage();
+    ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
+    Uint8List pngBytes = byteData.buffer.asUint8List();
+    final result = await ImageGallerySaver.saveImage(Uint8List.fromList(pngBytes));
+    if (result != null && result != "") {
+      //返回路径
+      String str = Uri.decodeComponent(result);
+      print("成功保存到$str");
+    } else {
+      print("保存失败");
+    }
+  }
+
+  void _selectedImage(bool isSelect) {
+    setState(() {
+      _imageFile = ImagePicker.pickImage(source: isSelect ? ImageSource.gallery : ImageSource.camera);
+    });
+  }
+
+  Widget _previewImage() {
+    return FutureBuilder<File>(
+        future: _imageFile,
+        builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.data != null) {
+            return new ClipOval(
+              child: SizedBox(
+                  width: 100.0,
+                  height: 100.0,
+                  child: Image.file(snapshot.data, fit: BoxFit.cover)
+              ),
+            );
+          } else {
+            return new Image.asset("images/ic_image_loading.png", height: 100.0, width: 100.0,fit: BoxFit.fill,);
+          }
+        });
+  }
 
   final List<String> actions = [
     '复制',
@@ -197,6 +280,23 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
     );
   }
 
+  void changeImg(int pos) {
+    setState(() {
+      imgs[pos] = "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-08.png";
+    });
+  }
+
+  void onPageChanged(int pos) {
+    print("当前是第$pos页");
+  }
+
+  var imgs = [
+    "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-02.png",
+    "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-03.png",
+    "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-04.png",
+    "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-05.png",
+    "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-06.png"
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -206,36 +306,114 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
         ),
         body: Column(
           children: <Widget>[
-          Padding(
-            key: anchorKey,
-            padding: EdgeInsets.all(0),
-            child: GestureDetector(
-              child: Container(
-                  child: Image.asset(
-                    "images/right_gray.png",
+//            PageView(
+//              children: <Widget>[
+//                Image.network(imgs[0]),
+//                Image.network(imgs[1]),
+//                Image.network(imgs[2]),
+//                Image.network(imgs[3]),
+//                GestureDetector(
+//                    onTap: () => changeImg(4), child: Image.network(imgs[4]))
+//              ],
+//              onPageChanged: onPageChanged,
+//            ),
+            Text.rich(TextSpan(
+              text: '商城认证体系更多店铺认证详情您可以点击下载',
+              style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),
+              children: [
+                TextSpan(
+                  text: '商家认证手册3.0',
+                  style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
+                  recognizer: TapGestureRecognizer()..onTap=() {
+                    print('hello');
+                  },
+                ),
+              ],
+            )),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: TextField(
+                    autofocus: false,
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),
+                    decoration: InputDecoration(
+                      hintText: '请输入手机号',
+                      hintStyle: TextStyle(color: Color.fromRGBO(153, 153, 153, 1),fontSize: 14),
+                      contentPadding: EdgeInsets.all(10),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide(
+                            color: Colors.blue,
+                            width: 0.5,
+                          )
+                      ),
+                    ),
                   ),
-              ),
-              onTap: _showPopup,
+                ),
+                FlatButton(
+                  textColor: Colors.blue,
+                  child: Text(_codeCountdownStr),
+                  onPressed: reGetCountdown,
+                ),
+              ],
             ),
-          ),
-          PopupWindowButton(
-              offset: Offset(0, 200),
-              child: Image(image: AssetImage("images/right_gray.png")),
-              window: Container(
-                padding: EdgeInsets.all(50),
-                alignment: Alignment.center,
-                color: Colors.greenAccent,
-                height: 200,
-                child: Container(
-                  color: Colors.white,
-                  height: 50,
-                ) ,
-              ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                FlatButton(onPressed: _widgetShot, child: Text('保存二维码')),
+                FlatButton(onPressed: (){
+                    _selectedImage(true);
+                  }, child: Text('选择图片')),
+                FlatButton(onPressed: (){
+                    _selectedImage(false);
+                  }, child: Text('拍照')),
+                Padding(
+                  key: anchorKey,
+                  padding: EdgeInsets.all(0),
+                  child: GestureDetector(
+                    child: Container(
+                      child: Image.asset(
+                        "images/right_gray.png",
+                      ),
+                    ),
+                    onTap: _showPopup,
+                  ),
+                ),
+                PopupWindowButton(
+                  offset: Offset(0, 200),
+                  child: Image(image: AssetImage("images/right_gray.png")),
+                  window: Container(
+                    padding: EdgeInsets.all(50),
+                    alignment: Alignment.center,
+                    color: Colors.greenAccent,
+                    height: 200,
+                    child: Container(
+                      color: Colors.white,
+                      height: 50,
+                    ) ,
+                  ),
+                ),
+              ],
             ),
-//            TextField(),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                RepaintBoundary(
+                  key: _globalKey,
+                  child: QrImage(
+                    backgroundColor: Colors.white,
+                    data: '二维码',
+                    size: 100,
+                  ),
+                ),
+                _previewImage(),
+              ],
+            ),
             ListView.builder(
                 shrinkWrap: true,
-                itemCount: 40,
+                itemCount: 3,
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 itemBuilder: (context, index) {
                   return Container(
@@ -253,6 +431,12 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => DropDownButtonPage()));
                         }else if(value == 3){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => GroupManage()));
+                        }else if(value == 4){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Mark()));
+                        }else if(value == 5){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AboutUs()));
+                        }else if(value == 6){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewPage()));
                         }
                         Scaffold.of(context).showSnackBar(SnackBar(
                           content: Text(actions[value]),

@@ -25,6 +25,22 @@ class _GroupManage extends State<GroupManage>{
             child: CustomScrollView(
               physics: BouncingScrollPhysics(),
               slivers: [
+//                SliverToBoxAdapter(
+//                  child: Container(
+//                    color: Colors.green,
+//                    child: Container(
+//                      padding: EdgeInsets.only(left: 20,right: 20,top: 20),
+//                      child: ListView.builder(
+//                        shrinkWrap: true,
+//                        itemCount: groupNames.length,
+//                        itemBuilder: (context,index){
+//                          var key = GlobalKey<SlideButtonState>();
+//                          return ItemGroup(key:key,name: groupNames[index],);
+//                        },
+//                      ),
+//                    ),
+//                  ),
+//                ),
                 SliverPadding(
                   padding: EdgeInsets.only(left: 20,right: 20,top: 20),
                   sliver: SliverList(
