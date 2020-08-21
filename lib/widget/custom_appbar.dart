@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 
-class MAppBar extends StatefulWidget implements PreferredSizeWidget {
-  MAppBar({@required this.child}) : assert(child != null);
+class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
+
+  CustomAppBar({@required this.child}) : assert(child != null);
   final Widget child;
+
   @override
   Size get preferredSize {
     return new Size.fromHeight(56.0);
   }
+
   @override
   State createState() {
-    return new MAppBarState();
+    return _CustomAppBarState();
   }
 }
-class MAppBarState extends State<MAppBar> {
+
+class _CustomAppBarState extends State<CustomAppBar> {
   @override
   Widget build(BuildContext context) {
     return widget.child;

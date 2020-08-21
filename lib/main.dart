@@ -6,7 +6,9 @@ import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutterapp/about_us.dart';
+import 'package:flutterapp/help_center.dart';
 import 'package:flutterapp/mark.dart';
 import 'package:flutterapp/page_view.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -199,6 +201,7 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
     '多选',
     '提醒',
     '翻译',
+    '引用',
   ];
 
   final List<PopupModel> items = [
@@ -300,6 +303,7 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
 
   @override
   Widget build(BuildContext context) {
+    ScreenUtil.init(context, width: 750, height: 1334);
     return Scaffold(
         appBar: AppBar(
           title: Text('PopupRoutePage'),
@@ -437,6 +441,8 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => AboutUs()));
                         }else if(value == 6){
                           Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewPage()));
+                        }else if(value == 7){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HelpCenter()));
                         }
                         Scaffold.of(context).showSnackBar(SnackBar(
                           content: Text(actions[value]),
