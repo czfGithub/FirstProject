@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterapp/wechat_account.dart';
 
 class AboutUs extends StatefulWidget{
   @override
@@ -15,14 +16,14 @@ class _AboutUs extends State<AboutUs>{
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([]); //隐藏
+//    SystemChrome.setEnabledSystemUIOverlays([]); //隐藏
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+//    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
   }
 
   @override
@@ -61,18 +62,24 @@ class _AboutUs extends State<AboutUs>{
               ],
             ),
           ),
-          Container(
-            margin: EdgeInsets.only(top: 10),
-            padding: EdgeInsets.only(left: 20,top: 15,right: 20,bottom: 15),
-            color: Colors.white,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Text('我们的微信公众号',style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 12),),
-                ),
-                Image.asset('images/ic_route_right_arrow'),
-              ],
+          GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => WeChatAccount()));
+            },
+            child: Container(
+              margin: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(left: 20,top: 15,right: 20,bottom: 15),
+              color: Colors.white,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Text('我们的微信公众号',style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 12),),
+                  ),
+                  Image.asset('images/ic_route_right_arrow'),
+                ],
+              ),
             ),
           ),
         ],

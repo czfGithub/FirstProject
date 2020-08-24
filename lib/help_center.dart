@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutterapp/demand_feedback.dart';
+import 'package:flutterapp/fault_repair.dart';
 import 'package:flutterapp/more_problem.dart';
 import 'package:flutterapp/widget/common_appbar_widget.dart';
 
@@ -100,7 +102,7 @@ class _HelpCenter extends State<HelpCenter>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(left: 20,right: 20,bottom: 15),
+                    padding: EdgeInsets.only(left: 20,right: 20,bottom: 15),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -133,17 +135,23 @@ class _HelpCenter extends State<HelpCenter>{
                       children: _getItemWidgets(_commonProblem),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.all(20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('需求反馈',style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 14,fontWeight: FontWeight.bold),),
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text('产品不好用？反馈给研发同学改进',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 10),),
-                        ),
-                      ],
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => DemandFeedback()));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('需求反馈',style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 14,fontWeight: FontWeight.bold),),
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text('产品不好用？反馈给研发同学改进',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 10),),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(
@@ -153,17 +161,23 @@ class _HelpCenter extends State<HelpCenter>{
                       children: _getItemWidgets(_demandFeedback),
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.all(20),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('故障报修',style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 14,fontWeight: FontWeight.bold),),
-                        Container(
-                          margin: EdgeInsets.only(left: 10),
-                          child: Text('商城出故障？反馈给技术小哥',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 10),),
-                        ),
-                      ],
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => FaultRepair()));
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(20),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text('故障报修',style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 14,fontWeight: FontWeight.bold),),
+                          Container(
+                            margin: EdgeInsets.only(left: 10),
+                            child: Text('商城出故障？反馈给技术小哥',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 10),),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(

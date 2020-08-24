@@ -5,15 +5,15 @@ import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutterapp/widget/common_appbar_widget.dart';
 import 'package:image_picker/image_picker.dart';
 
-class DemandFeedback extends StatefulWidget{
+class FaultRepair extends StatefulWidget{
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _DemandFeedback();
+    return _FaultRepair();
   }
 }
 
-class _DemandFeedback extends State<DemandFeedback>{
+class _FaultRepair extends State<FaultRepair>{
 
   List<File> _imageList = [new File('')];
   Future<File> _imageFile;
@@ -122,7 +122,7 @@ class _DemandFeedback extends State<DemandFeedback>{
         leftListener: (){
           Navigator.pop(context);
         },
-        center: Text('需求反馈',style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 18,fontWeight: FontWeight.bold),),
+        center: Text('故障报修',style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 18,fontWeight: FontWeight.bold),),
         backgroundColor: Colors.white,
       ),
       body: CustomScrollView(
@@ -138,7 +138,7 @@ class _DemandFeedback extends State<DemandFeedback>{
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 25,top: 25),
-                  child: Text('请描述一下您的需求',style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),),
+                  child: Text('请描述一下您所遇到的问题',style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),),
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 10,left: 25,right: 25,bottom: 20),
@@ -153,7 +153,7 @@ class _DemandFeedback extends State<DemandFeedback>{
                     decoration: InputDecoration(
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.all(10),
-                      hintText: '说明您的需求',
+                      hintText: '说明您遇到的问题',
                       hintStyle: TextStyle(color: Color.fromRGBO(95, 94, 94, 1),fontSize: 12)
                     ),
                   ),
@@ -165,7 +165,7 @@ class _DemandFeedback extends State<DemandFeedback>{
                 ),
                 Container(
                   margin: EdgeInsets.only(top: 20,left: 25),
-                  child: Text('图片上传（提供需求截图）',style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),),
+                  child: Text('图片上传（提供故障截图）',style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),),
                 ),
               ],
             ),
