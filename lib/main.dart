@@ -124,11 +124,216 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
   GlobalKey anchorKey = GlobalKey();
   //首先在你需要生成二维码页面中声明一个GlobalKey
   GlobalKey _globalKey = new GlobalKey();
+  TextEditingController textEditingController = TextEditingController();
 
   Timer _countdownTimer;
   String _codeCountdownStr = '获取验证码';
   int _countdownNum = 59;
   Future<File> _imageFile;
+  int _selectedCount = 0;
+  var _radioGroupValue = '语文';
+  var _sex = '先生';
+  var _tag = '家';
+  List<String> _sexs = ['先生','女士'];
+  List<String> _tags = ['家','公司','学校'];
+
+  List<Widget> _getTags(List<String> tags, String tag, Function onChange){
+    List<Widget> widgets = [];
+    for(int i = 0; i < tags.length; i++){
+      widgets.add(GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: (){
+          onChange(tags[i]);
+        },
+        child: Container(
+          width: 60,
+          height: 30,
+          alignment: Alignment.center,
+          padding: EdgeInsets.only(top: 5,bottom: 5),
+          margin: EdgeInsets.only(left: i == 0 ? 0 : 10),
+          decoration: BoxDecoration(
+            color: tags[i] == tag ? Color.fromRGBO(3, 50, 157, 1) : Color.fromRGBO(255, 246, 246, 1),
+            borderRadius: BorderRadius.circular(15),
+          ),
+          child: Text(tags[i],style: TextStyle(color: tags[i] == tag ? Colors.white : Color.fromRGBO(136, 136, 136, 1),fontSize: 14)),
+        ),
+      ));
+    }
+    return widgets;
+  }
+
+  Future<int> _showBottomSheet(BuildContext context) {
+    return showModalBottomSheet<int>(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          child: Column(
+            children: [
+              Container(
+                  margin: EdgeInsets.only(left: 10,right: 10,top: 15,bottom: 15),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: (){
+                            Navigator.of(context).pop(-1);
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: Text('取消',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 14),),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Center(
+                          child: Text('会员卡',style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 16,fontWeight: FontWeight.bold),),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: (){
+                            Navigator.of(context).pop(0);
+                          },
+                          child: Container(
+                            alignment: Alignment.centerRight,
+                            padding: EdgeInsets.all(10),
+                            child: Text('完成($_selectedCount)',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 14),),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+              ),
+              Container(
+                color: Color.fromRGBO(232, 232, 232, 1),
+                width: double.infinity,
+                height: 0.5,
+              ),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(left: 25,right: 25),
+                    child: Image.asset('images/ic_discount_search.png',width: 13,height: 13,),
+                  ),
+                  Container(
+                    color: Color.fromRGBO(232, 232, 232, 1),
+                    width: 0.5,
+                    height: 12,
+                    margin: EdgeInsets.only(right: 12),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      maxLines: 1,
+                      controller: textEditingController,
+                      style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 14),
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: '输入会员卡名称',
+                        hintStyle: TextStyle(color: Color.fromRGBO(194, 203, 202, 1),fontSize: 14),
+                        contentPadding: EdgeInsets.all(10)
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: (){
+                      textEditingController.text = '';
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      margin: EdgeInsets.only(right: 10),
+                      child: Image.asset('images/ic_clear.png',width: 13,height: 13,),
+                    ),
+                  ),
+                ],
+              ),
+              Container(
+                color: Color.fromRGBO(232, 232, 232, 1),
+                width: double.infinity,
+                height: 0.5,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: 10,
+                  itemBuilder: (context,index){
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          child: Image.asset('images/ic_unselect.png',width: 20,height: 20,),
+                        ),
+                        Container(
+                          width: 0.5,
+                          height: 140,
+                          color: Color.fromRGBO(232, 232, 232, 1),
+                        ),
+                        Expanded(
+                          child: Stack(
+                            alignment: Alignment.bottomLeft,
+                            children: [
+                              Container(
+                                margin: EdgeInsets.all(20),
+                                padding: EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                    gradient: LinearGradient(colors: index % 2 == 0 ? [Color.fromRGBO(252, 239, 197, 1),Color.fromRGBO(246, 207, 142, 1)] : [Color.fromRGBO(212, 212, 212, 1),Color.fromRGBO(141, 132, 132, 1)]),
+                                    borderRadius: BorderRadius.circular(10)
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
+                                        Image.asset('images/ic_vip_discount.png',width: 25,height: 25,),
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text('$index',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(left: 5),
+                                          child: Text('宇宙无敌黄金圣斗士卡',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),
+                                        ),
+                                      ],
+                                    ),
+                                    Container(
+                                      alignment: Alignment.centerRight,
+                                      margin: EdgeInsets.only(top: 10),
+                                      child: Text('有效期至 2050-08-18',style: TextStyle(color: Colors.white,fontSize: 12),),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.only(left: 10),
+                                child: Image.asset('images/ic_discount_bg.png',width: 60,height: 20,),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   void reGetCountdown() {
     setState(() {
@@ -328,8 +533,9 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                 TextSpan(
                   text: '商家认证手册3.0',
                   style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
-                  recognizer: TapGestureRecognizer()..onTap=() {
-                    print('hello');
+                  recognizer: TapGestureRecognizer()..onTap=() async{
+                    int type = await _showBottomSheet(context);
+                    print('type:$type');
                   },
                 ),
               ],
@@ -400,6 +606,50 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                   ),
                 ),
               ],
+            ),
+            Row(
+              children: _getTags(_sexs, _sex, (tag){
+                setState(() {
+                  print(tag);
+                  _sex = tag;
+                });
+              }),
+            ),
+            Row(
+              children: _getTags(_tags, _tag, (tag){
+                setState(() {
+                  print(tag);
+                  _tag = tag;
+                });
+              }),
+//              children: [
+//                Container(
+//                  padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+//                  decoration: BoxDecoration(
+//                    color: Color.fromRGBO(3, 50, 157, 1),
+//                    borderRadius: BorderRadius.circular(20),
+//                  ),
+//                  child: Text('家',style: TextStyle(color: Colors.white,fontSize: 14)),
+//                ),
+//                Container(
+//                  margin: EdgeInsets.only(left: 10),
+//                  padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+//                  decoration: BoxDecoration(
+//                    color: Color.fromRGBO(255, 246, 246, 1),
+//                    borderRadius: BorderRadius.circular(20),
+//                  ),
+//                  child: Text('公司',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 14)),
+//                ),
+//                Container(
+//                  margin: EdgeInsets.only(left: 10),
+//                  padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
+//                  decoration: BoxDecoration(
+//                    color: Color.fromRGBO(255, 246, 246, 1),
+//                    borderRadius: BorderRadius.circular(20),
+//                  ),
+//                  child: Text('学校',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 14)),
+//                ),
+//              ],
             ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
