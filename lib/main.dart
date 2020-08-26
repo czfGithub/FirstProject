@@ -11,6 +11,7 @@ import 'package:flutterapp/about_us.dart';
 import 'package:flutterapp/help_center.dart';
 import 'package:flutterapp/mark.dart';
 import 'package:flutterapp/page_view.dart';
+import 'package:flutterapp/show_dialog.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 import 'widget/widget_w_popup_menu.dart';
@@ -124,7 +125,6 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
   GlobalKey anchorKey = GlobalKey();
   //首先在你需要生成二维码页面中声明一个GlobalKey
   GlobalKey _globalKey = new GlobalKey();
-  TextEditingController textEditingController = TextEditingController();
 
   Timer _countdownTimer;
   String _codeCountdownStr = '获取验证码';
@@ -160,179 +160,6 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
       ));
     }
     return widgets;
-  }
-
-  Future<int> _showBottomSheet(BuildContext context) {
-    return showModalBottomSheet<int>(
-      context: context,
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25)),
-      ),
-      builder: (BuildContext context) {
-        return Container(
-          child: Column(
-            children: [
-              Container(
-                  margin: EdgeInsets.only(left: 10,right: 10,top: 15,bottom: 15),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        flex: 1,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: (){
-                            Navigator.of(context).pop(-1);
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(10),
-                            child: Text('取消',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 14),),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: Center(
-                          child: Text('会员卡',style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 16,fontWeight: FontWeight.bold),),
-                        ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: (){
-                            Navigator.of(context).pop(0);
-                          },
-                          child: Container(
-                            alignment: Alignment.centerRight,
-                            padding: EdgeInsets.all(10),
-                            child: Text('完成($_selectedCount)',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 14),),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-              ),
-              Container(
-                color: Color.fromRGBO(232, 232, 232, 1),
-                width: double.infinity,
-                height: 0.5,
-              ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(left: 25,right: 25),
-                    child: Image.asset('images/ic_discount_search.png',width: 13,height: 13,),
-                  ),
-                  Container(
-                    color: Color.fromRGBO(232, 232, 232, 1),
-                    width: 0.5,
-                    height: 12,
-                    margin: EdgeInsets.only(right: 12),
-                  ),
-                  Expanded(
-                    child: TextField(
-                      maxLines: 1,
-                      controller: textEditingController,
-                      style: TextStyle(color: Color.fromRGBO(16, 16, 16, 1),fontSize: 14),
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: '输入会员卡名称',
-                        hintStyle: TextStyle(color: Color.fromRGBO(194, 203, 202, 1),fontSize: 14),
-                        contentPadding: EdgeInsets.all(10)
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    behavior: HitTestBehavior.opaque,
-                    onTap: (){
-                      textEditingController.text = '';
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10),
-                      margin: EdgeInsets.only(right: 10),
-                      child: Image.asset('images/ic_clear.png',width: 13,height: 13,),
-                    ),
-                  ),
-                ],
-              ),
-              Container(
-                color: Color.fromRGBO(232, 232, 232, 1),
-                width: double.infinity,
-                height: 0.5,
-              ),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: 10,
-                  itemBuilder: (context,index){
-                    return Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          child: Image.asset('images/ic_unselect.png',width: 20,height: 20,),
-                        ),
-                        Container(
-                          width: 0.5,
-                          height: 140,
-                          color: Color.fromRGBO(232, 232, 232, 1),
-                        ),
-                        Expanded(
-                          child: Stack(
-                            alignment: Alignment.bottomLeft,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.all(20),
-                                padding: EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                    gradient: LinearGradient(colors: index % 2 == 0 ? [Color.fromRGBO(252, 239, 197, 1),Color.fromRGBO(246, 207, 142, 1)] : [Color.fromRGBO(212, 212, 212, 1),Color.fromRGBO(141, 132, 132, 1)]),
-                                    borderRadius: BorderRadius.circular(10)
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: [
-                                        Image.asset('images/ic_vip_discount.png',width: 25,height: 25,),
-                                        Align(
-                                          alignment: Alignment.bottomLeft,
-                                          child: Text('$index',style: TextStyle(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(left: 5),
-                                          child: Text('宇宙无敌黄金圣斗士卡',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                      alignment: Alignment.centerRight,
-                                      margin: EdgeInsets.only(top: 10),
-                                      child: Text('有效期至 2050-08-18',style: TextStyle(color: Colors.white,fontSize: 12),),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                margin: EdgeInsets.only(left: 10),
-                                child: Image.asset('images/ic_discount_bg.png',width: 60,height: 20,),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   void reGetCountdown() {
@@ -407,6 +234,7 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
     '提醒',
     '翻译',
     '引用',
+    '黏贴'
   ];
 
   final List<PopupModel> items = [
@@ -513,8 +341,10 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
         appBar: AppBar(
           title: Text('PopupRoutePage'),
         ),
-        body: Column(
-          children: <Widget>[
+        body: Builder(
+          builder: (BuildContext context){
+            return Column(
+              children: <Widget>[
 //            PageView(
 //              children: <Widget>[
 //                Image.network(imgs[0]),
@@ -526,102 +356,101 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
 //              ],
 //              onPageChanged: onPageChanged,
 //            ),
-            Text.rich(TextSpan(
-              text: '商城认证体系更多店铺认证详情您可以点击下载',
-              style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),
-              children: [
-                TextSpan(
-                  text: '商家认证手册3.0',
-                  style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
-                  recognizer: TapGestureRecognizer()..onTap=() async{
-                    int type = await _showBottomSheet(context);
-                    print('type:$type');
-                  },
-                ),
-              ],
-            )),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: TextField(
-                    autofocus: false,
-                    keyboardType: TextInputType.number,
-                    style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),
-                    decoration: InputDecoration(
-                      hintText: '请输入手机号',
-                      hintStyle: TextStyle(color: Color.fromRGBO(153, 153, 153, 1),fontSize: 14),
-                      contentPadding: EdgeInsets.all(10),
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: Colors.blue,
-                            width: 0.5,
-                          )
+                Text.rich(TextSpan(
+                  text: '商城认证体系更多店铺认证详情您可以点击下载',
+                  style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),
+                  children: [
+                    TextSpan(
+                      text: '商家认证手册3.0',
+                      style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
+                      recognizer: TapGestureRecognizer()..onTap=() async{
+                        print('hello');
+                      },
+                    ),
+                  ],
+                )),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        autofocus: false,
+                        keyboardType: TextInputType.number,
+                        style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),
+                        decoration: InputDecoration(
+                          hintText: '请输入手机号',
+                          hintStyle: TextStyle(color: Color.fromRGBO(153, 153, 153, 1),fontSize: 14),
+                          contentPadding: EdgeInsets.all(10),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.blue,
+                                width: 0.5,
+                              )
+                          ),
+                        ),
                       ),
                     ),
-                  ),
+                    FlatButton(
+                      textColor: Colors.blue,
+                      child: Text(_codeCountdownStr),
+                      onPressed: reGetCountdown,
+                    ),
+                  ],
                 ),
-                FlatButton(
-                  textColor: Colors.blue,
-                  child: Text(_codeCountdownStr),
-                  onPressed: reGetCountdown,
-                ),
-              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                FlatButton(onPressed: _widgetShot, child: Text('保存二维码')),
-                FlatButton(onPressed: (){
-                    _selectedImage(true);
-                  }, child: Text('选择图片')),
-                FlatButton(onPressed: (){
-                    _selectedImage(false);
-                  }, child: Text('拍照')),
-                Padding(
-                  key: anchorKey,
-                  padding: EdgeInsets.all(0),
-                  child: GestureDetector(
-                    child: Container(
-                      child: Image.asset(
-                        "images/right_gray.png",
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    FlatButton(onPressed: _widgetShot, child: Text('保存二维码')),
+                    FlatButton(onPressed: (){
+                      _selectedImage(true);
+                      }, child: Text('选择图片')),
+                    FlatButton(onPressed: (){
+                      _selectedImage(false);
+                      }, child: Text('拍照')),
+                    Padding(
+                      key: anchorKey,
+                      padding: EdgeInsets.all(0),
+                      child: GestureDetector(
+                        child: Container(
+                          child: Image.asset(
+                            "images/right_gray.png",
+                          ),
+                        ),
+                        onTap: _showPopup,
                       ),
                     ),
-                    onTap: _showPopup,
-                  ),
+                    PopupWindowButton(
+                      offset: Offset(0, 200),
+                      child: Image(image: AssetImage("images/right_gray.png")),
+                      window: Container(
+                        padding: EdgeInsets.all(50),
+                        alignment: Alignment.center,
+                        color: Colors.greenAccent,
+                        height: 200,
+                        child: Container(
+                          color: Colors.white,
+                          height: 50,
+                        ) ,
+                      ),
+                    ),
+                  ],
                 ),
-                PopupWindowButton(
-                  offset: Offset(0, 200),
-                  child: Image(image: AssetImage("images/right_gray.png")),
-                  window: Container(
-                    padding: EdgeInsets.all(50),
-                    alignment: Alignment.center,
-                    color: Colors.greenAccent,
-                    height: 200,
-                    child: Container(
-                      color: Colors.white,
-                      height: 50,
-                    ) ,
-                  ),
+                Row(
+                  children: _getTags(_sexs, _sex, (tag){
+                    setState(() {
+                      print(tag);
+                      _sex = tag;
+                    });
+                  }),
                 ),
-              ],
-            ),
-            Row(
-              children: _getTags(_sexs, _sex, (tag){
-                setState(() {
-                  print(tag);
-                  _sex = tag;
-                });
-              }),
-            ),
-            Row(
-              children: _getTags(_tags, _tag, (tag){
-                setState(() {
-                  print(tag);
-                  _tag = tag;
-                });
-              }),
+                Row(
+                  children: _getTags(_tags, _tag, (tag){
+                    setState(() {
+                      print(tag);
+                      _tag = tag;
+                    });
+                  }),
 //              children: [
 //                Container(
 //                  padding: EdgeInsets.only(left: 10,right: 10,top: 5,bottom: 5),
@@ -650,73 +479,78 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
 //                  child: Text('学校',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 14)),
 //                ),
 //              ],
-            ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                RepaintBoundary(
-                  key: _globalKey,
-                  child: QrImage(
-                    backgroundColor: Colors.white,
-                    data: '二维码',
-                    size: 100,
-                  ),
                 ),
-                _previewImage(),
-              ],
-            ),
-            ListView.builder(
-                shrinkWrap: true,
-                itemCount: 3,
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                itemBuilder: (context, index) {
-                  return Container(
-                    padding: EdgeInsets.symmetric(vertical: 5),
-                    alignment: index % 2 == 0
-                        ? Alignment.centerLeft
-                        : Alignment.centerRight,
-                    child: WPopupMenu(
-                      onValueChanged: (int value) {
-                        if(value == 0){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => PopupMenuButtonPage()));
-                        }else if(value == 1){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShaderMaskPage()));
-                        }else if(value == 2){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => DropDownButtonPage()));
-                        }else if(value == 3){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => GroupManage()));
-                        }else if(value == 4){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Mark()));
-                        }else if(value == 5){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => AboutUs()));
-                        }else if(value == 6){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewPage()));
-                        }else if(value == 7){
-                          Navigator.of(context).push(MaterialPageRoute(builder: (context) => HelpCenter()));
-                        }
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text(actions[value]),
-                          duration: Duration(milliseconds: 500),
-                        ));
-                      },
-                      pressType: PressType.longPress,
-                      actions: actions,
-                      child: UnconstrainedBox(
-                        child: Container(
-                          height: 40,
-                          color: Colors.cyan,
-                          alignment: Alignment.center,
-                          child: Text(
-                            '我是Title $index',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    RepaintBoundary(
+                      key: _globalKey,
+                      child: QrImage(
+                        backgroundColor: Colors.white,
+                        data: '二维码',
+                        size: 100,
                       ),
                     ),
-                  );
-                }),
-          ],
-        ));
+                    _previewImage(),
+                  ],
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: 3,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    itemBuilder: (context, index) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(vertical: 5),
+                        alignment: index % 2 == 0
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: WPopupMenu(
+                          onValueChanged: (int value) {
+                            if(value == 0){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => PopupMenuButtonPage()));
+                            }else if(value == 1){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShaderMaskPage()));
+                            }else if(value == 2){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => DropDownButtonPage()));
+                            }else if(value == 3){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => GroupManage()));
+                            }else if(value == 4){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Mark()));
+                            }else if(value == 5){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => AboutUs()));
+                            }else if(value == 6){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ViewPage()));
+                            }else if(value == 7){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => HelpCenter()));
+                            }else if(value == 8){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowDialog()));
+                            }
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text(actions[value]),
+                              duration: Duration(milliseconds: 500),
+                            ));
+                          },
+                          pressType: PressType.longPress,
+                          actions: actions,
+                          child: UnconstrainedBox(
+                            child: Container(
+                              height: 40,
+                              color: Colors.cyan,
+                              alignment: Alignment.center,
+                              child: Text(
+                                '我是Title $index',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
+              ],
+            );
+          }
+        ),
+    );
 //    );
   }
 }
