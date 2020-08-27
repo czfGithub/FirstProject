@@ -345,6 +345,7 @@ class _ShowDialog extends State<ShowDialog>{
                           color: Color.fromRGBO(232, 232, 232, 1),
                         ),
                         Expanded(
+                          flex: 1,
                           child: Container(
                             height: 110,
                             margin: EdgeInsets.only(left: 20,right: 20),
@@ -373,47 +374,50 @@ class _ShowDialog extends State<ShowDialog>{
                                     child: Text('优\n惠\n券',style: TextStyle(color: Colors.white,fontSize: 12),),
                                   ),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.all(15),
-                                      child: Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: [
-                                          Container(
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                                  children: [
-                                                    Image.asset('images/ic_discount_price.png',width: 15,height: 15,),
-                                                    Container(
-                                                      margin: EdgeInsets.only(left: 5),
-                                                      child: Text('50',style: TextStyle(color: Color.fromRGBO(210, 1, 29, 1),fontSize: 28,fontWeight: FontWeight.bold),),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Text('满189元可用',style: TextStyle(color: Color.fromRGBO(210, 1, 29, 1),fontSize: 14,fontWeight: FontWeight.bold),),
-                                              ],
+                                Expanded(
+                                  flex: 1,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.all(15),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: [
+                                            Expanded(
+                                              flex: 1,
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                                    children: [
+                                                      Image.asset('images/ic_discount_price.png',width: 15,height: 15,),
+                                                      Container(
+                                                        margin: EdgeInsets.only(left: 5),
+                                                        child: Text('50',style: TextStyle(color: Color.fromRGBO(210, 1, 29, 1),fontSize: 28,fontWeight: FontWeight.bold),),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Text('满189元可用',style: TextStyle(color: Color.fromRGBO(210, 1, 29, 1),fontSize: 14,fontWeight: FontWeight.bold),),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          Text('全场女装商品可用\n(特殊商品除外)',style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 10),textAlign: TextAlign.center,),
-                                        ],
+                                            Text('全场女装商品可用\n(特殊商品除外)',style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 10),textAlign: TextAlign.center,),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Container(
-                                      margin: EdgeInsets.only(left: 15,right: 15),
-                                      color: Color.fromRGBO(232, 232, 232, 1),
-                                      height: 0.5,
-                                    ),
-                                    Container(
-                                      alignment: Alignment.centerRight,
-                                      margin: EdgeInsets.only(top: 5,bottom: 5,left: 15),
-                                      child: Text('·有效期2020.04.16-04.19',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 10),),
-                                    ),
-                                  ],
+                                      Container(
+                                        margin: EdgeInsets.only(left: 15,right: 15),
+                                        color: Color.fromRGBO(232, 232, 232, 1),
+                                        height: 0.5,
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 5,bottom: 5,left: 15),
+                                        child: Text('·有效期2020.04.16-04.19',style: TextStyle(color: Color.fromRGBO(136, 136, 136, 1),fontSize: 10),),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -424,11 +428,29 @@ class _ShowDialog extends State<ShowDialog>{
                   },
                 ),
               ),
+//              Expanded(
+//                child: SingleChildScrollView(
+//                  physics: BouncingScrollPhysics(),
+//                  child: Column(
+//                    children: getRow(),
+//                  ),
+//                ),
+//              ),
             ],
           ),
         );
       },
     );
+  }
+
+  List<Widget> getRow(){
+    List<Widget> widgets = [];
+    for(int index = 0; index < selecteDiscount.length; index++){
+      widgets.add(Row(
+        children: [],
+      ));
+    }
+    return widgets;
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutterapp/about_us.dart';
+import 'package:flutterapp/add_employee.dart';
 import 'package:flutterapp/help_center.dart';
 import 'package:flutterapp/mark.dart';
 import 'package:flutterapp/page_view.dart';
@@ -365,6 +366,7 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                       style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
                       recognizer: TapGestureRecognizer()..onTap=() async{
                         print('hello');
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployee()));
                       },
                     ),
                   ],
