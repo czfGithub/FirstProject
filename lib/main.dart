@@ -11,6 +11,7 @@ import 'package:flutterapp/about_us.dart';
 import 'package:flutterapp/add_employee.dart';
 import 'package:flutterapp/help_center.dart';
 import 'package:flutterapp/mark.dart';
+import 'package:flutterapp/my_service.dart';
 import 'package:flutterapp/page_view.dart';
 import 'package:flutterapp/show_dialog.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -235,7 +236,8 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
     '提醒',
     '翻译',
     '引用',
-    '黏贴'
+    '黏贴',
+    '消息',
   ];
 
   final List<PopupModel> items = [
@@ -526,6 +528,8 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => HelpCenter()));
                             }else if(value == 8){
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShowDialog()));
+                            }else if(value == 9){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => MyService()));
                             }
                             Scaffold.of(context).showSnackBar(SnackBar(
                               content: Text(actions[value]),
