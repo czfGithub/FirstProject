@@ -9,13 +9,19 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutterapp/about_us.dart';
 import 'package:flutterapp/add_employee.dart';
+import 'package:flutterapp/customer_list.dart';
+import 'package:flutterapp/discount_ticket.dart';
 import 'package:flutterapp/help_center.dart';
 import 'package:flutterapp/mark.dart';
 import 'package:flutterapp/my_service.dart';
 import 'package:flutterapp/page_view.dart';
+import 'package:flutterapp/purchase_record.dart';
 import 'package:flutterapp/show_dialog.dart';
+import 'package:flutterapp/widget/popup_item.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
+import 'http_request.dart';
+import 'models/popup_model.dart';
 import 'widget/widget_w_popup_menu.dart';
 import 'popup_menu_botton_page.dart';
 import 'shader_mask_page.dart';
@@ -28,67 +34,6 @@ import 'package:image_picker/image_picker.dart';
 
 void main(){
   runApp(MyApp());
-}
-
-class PopupItem extends StatelessWidget{
-
-  PopupItem({
-    @required this.model,
-    this.lineVisible,
-    this.onClick,
-  });
-
-  bool lineVisible = true;
-  PopupModel model;
-  Function onClick; //点击child事件
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return GestureDetector(
-      behavior: HitTestBehavior.opaque,
-      onTap: (){
-        if(onClick != null){
-          Navigator.pop(context);
-          onClick();
-        }
-      },
-      child: Container(
-        width: 100,
-        child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.only(left: 20,top: 10,right: 20,bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (model.icon != null && model.icon != '') Image.asset(model.icon,width: 40,height: 40,),
-                  Text(model.value,style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 12),),
-                ],
-              ),
-            ),
-            if(lineVisible) Container(
-              margin: EdgeInsets.only(left: 20,right: 20),
-              height: 0.5,
-              color: Color.fromRGBO(248, 96, 144, 1),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PopupModel{
-  int index;
-  String icon;
-  String value;
-
-  PopupModel({
-    this.index,
-    this.icon,
-    this.value,
-  });
 }
 
 class MyApp extends StatelessWidget {
@@ -222,7 +167,7 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
               ),
             );
           } else {
-            return new Image.asset("images/ic_image_loading.png", height: 100.0, width: 100.0,fit: BoxFit.fill,);
+            return new Image.asset("images/ic_load_default_round.png", height: 100.0, width: 100.0,fit: BoxFit.fill,);
           }
         });
   }
@@ -368,7 +313,28 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                       style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
                       recognizer: TapGestureRecognizer()..onTap=() async{
                         print('hello');
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddEmployee()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerList()));
+                      },
+                    ),
+                    TextSpan(
+                      text: ' 优惠券列表',
+                      style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
+                      recognizer: TapGestureRecognizer()..onTap=() async{
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DiscountTicket()));
+                      },
+                    ),
+                    TextSpan(
+                      text: ' http 请求',
+                      style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
+                      recognizer: TapGestureRecognizer()..onTap=() async{
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => MHttpRequest()));
+                      },
+                    ),
+                    TextSpan(
+                      text: ' 购买记录',
+                      style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
+                      recognizer: TapGestureRecognizer()..onTap=() async{
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PurchaseRecord()));
                       },
                     ),
                   ],

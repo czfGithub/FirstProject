@@ -117,7 +117,7 @@ class ItemMessage extends StatelessWidget{
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.asset('images/ic_image_loading.png',width: 40,height: 40,),
+              Image.asset('images/ic_load_default_round.png',width: 40,height: 40,),
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(left: 5,right: 40),
@@ -126,13 +126,13 @@ class ItemMessage extends StatelessWidget{
                     children: [
                       Container(
                         padding: EdgeInsets.all(10),
-//                        color: Color.fromRGBO(242, 242, 242, 1),
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('images/ic_message.9.png'),
-                              fit: BoxFit.fill
-                            )
-                        ),
+                        color: Color.fromRGBO(242, 242, 242, 1),
+//                        decoration: BoxDecoration(
+//                            image: DecorationImage(
+//                              image: AssetImage('images/ic_message.9.png'),
+//                              fit: BoxFit.fill
+//                            )
+//                        ),
                         child: Text(message.message,style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),),
                       ),
                       Container(
@@ -164,13 +164,7 @@ class ItemMessage extends StatelessWidget{
                     children: [
                       Container(
                         padding: EdgeInsets.all(10),
-//                        color: Color.fromRGBO(242, 242, 242, 1),
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('images/ic_message.9.png'),
-                              fit: BoxFit.fill
-                            )
-                        ),
+                        color: Color.fromRGBO(242, 242, 242, 1),
                         child: Text(message.message,style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),),
                       ),
                       Container(
@@ -181,7 +175,7 @@ class ItemMessage extends StatelessWidget{
                   ),
                 ),
               ),
-              Image.asset('images/ic_image_loading.png',width: 40,height: 40,),
+              Image.asset('images/ic_load_default_round.png',width: 40,height: 40,),
             ],
           ),
           Container(height: 10,)

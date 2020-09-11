@@ -29,14 +29,18 @@ class Popup extends StatelessWidget{
   final Widget child;
   final Function onClick; //点击事件
   final double left; //距离左边位置
+  final double right; //距离右边位置
   final double top; //距离上面位置
+  final double bottom; //距离底部距离
   final List<Widget> items;
 
   Popup({
     this.child,
     this.onClick,
     this.left,
+    this.right,
     this.top,
+    this.bottom,
     @required this.items,
   });
 
@@ -50,12 +54,11 @@ class Popup extends StatelessWidget{
           color: Colors.transparent,
         ),
         Positioned(
-          child: Container(
-            color: Colors.white,
-            child: Column(children: items),
-          ),
+          child: child,
           left: left,
-          top: top,),
+          top: top,
+          right: right,
+          bottom: bottom,),
       ],
     ),
       onTap: (){ //点击空白处关闭
