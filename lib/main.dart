@@ -6,9 +6,11 @@ import 'dart:ui';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/screenutil.dart';
 import 'package:flutterapp/about_us.dart';
 import 'package:flutterapp/add_employee.dart';
+import 'package:flutterapp/custom_calendar.dart';
 import 'package:flutterapp/customer_list.dart';
 import 'package:flutterapp/discount_ticket.dart';
 import 'package:flutterapp/help_center.dart';
@@ -16,6 +18,7 @@ import 'package:flutterapp/mark.dart';
 import 'package:flutterapp/my_service.dart';
 import 'package:flutterapp/page_view.dart';
 import 'package:flutterapp/purchase_record.dart';
+import 'package:flutterapp/select_appointment_time.dart';
 import 'package:flutterapp/show_dialog.dart';
 import 'package:flutterapp/widget/popup_item.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -31,9 +34,17 @@ import 'package:flutterapp/Popup.dart';
 import 'group_manage.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/cupertino.dart';
 
 void main(){
-  runApp(MyApp());
+  // 强制竖屏
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]).then((value){
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -274,6 +285,41 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
     print("当前是第$pos页");
   }
 
+  Future<DateTime> _showDatePicker1() {
+    var date = DateTime.now();
+    return showDatePicker(
+      context: context,
+      initialDate: date,
+      firstDate: date,
+      lastDate: date.add( //未来30天可选
+        Duration(days: 30),
+      ),
+    );
+  }
+
+  Future<DateTime> _showDatePicker2() {
+    var date = DateTime.now();
+    return showCupertinoModalPopup(
+      context: context,
+      builder: (ctx) {
+        return SizedBox(
+          height: 200,
+          child: CupertinoDatePicker(
+            mode: CupertinoDatePickerMode.dateAndTime,
+            minimumDate: date,
+            maximumDate: date.add(
+              Duration(days: 30),
+            ),
+            maximumYear: date.year + 1,
+            onDateTimeChanged: (DateTime value) {
+              print(value);
+            },
+          ),
+        );
+      },
+    );
+  }
+
   var imgs = [
     "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-02.png",
     "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-03.png",
@@ -281,6 +327,10 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
     "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-05.png",
     "https://i1.mifile.cn/f/i/2019/micc9/summary/specs-06.png"
   ];
+
+  String email = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)\$";
+  String email1 = "^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})\$";
+  String str = "hello\$";
 
   @override
   Widget build(BuildContext context) {
@@ -312,7 +362,7 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                       text: '商家认证手册3.0',
                       style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
                       recognizer: TapGestureRecognizer()..onTap=() async{
-                        print('hello');
+                        print(str);
                         Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerList()));
                       },
                     ),
@@ -337,6 +387,34 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => PurchaseRecord()));
                       },
                     ),
+                    TextSpan(
+                      text: ' 预约时间',
+                      style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
+                      recognizer: TapGestureRecognizer()..onTap=() async{
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SelectAppointmentTime()));
+                      },
+                    ),
+                    TextSpan(
+                      text: ' 自定义日历',
+                      style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
+                      recognizer: TapGestureRecognizer()..onTap=() async{
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => CustomerCalendar()));
+                      },
+                    ),
+                    TextSpan(
+                      text: ' 日历',
+                      style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
+                      recognizer: TapGestureRecognizer()..onTap=() async{
+                         _showDatePicker1().then((value) => print(value));
+                      },
+                    ),
+                    TextSpan(
+                      text: ' IOS日历',
+                      style: TextStyle(color: Color.fromRGBO(4, 50, 157, 1)),
+                      recognizer: TapGestureRecognizer()..onTap=() async{
+                        _showDatePicker2();
+                      },
+                    ),
                   ],
                 )),
                 Row(
@@ -345,7 +423,8 @@ class _PopupRoutePageState extends State<PopupRoutePage> {
                     Expanded(
                       child: TextField(
                         autofocus: false,
-                        keyboardType: TextInputType.number,
+                        inputFormatters: [WhitelistingTextInputFormatter(RegExp("[0-9]"))], //"[0-9]"
+//                        keyboardType: TextInputType.number,
                         style: TextStyle(color: Color.fromRGBO(53, 53, 53, 1),fontSize: 14),
                         decoration: InputDecoration(
                           hintText: '请输入手机号',
