@@ -17,15 +17,6 @@ class _SelectAppointmentTime extends State<SelectAppointmentTime>{
   var _monthYear;
   List<String> _headList = ['S','M','T','W','T','F','S'];
 
-  onChange(time) {
-    if (_selectDate != time) {
-      setState(() {
-        _selectDate = time;
-        print(_selectDate);
-      });
-    }
-  }
-
   getPreOrNextMonth(int month){
     setState(() {
       int year = _initDate.year;
@@ -40,6 +31,157 @@ class _SelectAppointmentTime extends State<SelectAppointmentTime>{
       _selectDate = _initDate;
       _monthYear = TimeUtil.getMonthName(_initDate) + "  ${_initDate.year}";
     });
+  }
+
+  onChange(time) {
+    if (_selectDate != time) {
+      setState(() {
+        print(_selectDate);
+        _selectDate = time;
+        _showModalBottomSheet();
+      });
+    }
+  }
+
+  // 弹出底部菜单列表模态对话框
+  Future<String> _showModalBottomSheet() {
+    return showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: Colors.white,
+      isScrollControlled: true,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight: Radius.circular(10)),
+      ),
+      builder: (BuildContext context) {
+        return Container(
+          height: 480,
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: (){
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 5),
+                      padding: EdgeInsets.all(15),
+                      child: Image.asset('images/ic_cancel.png',width: 15,height: 15,),
+                    ),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text('FILL IN PERSONAL INFORMATION',style: TextStyle(color: Color.fromRGBO(51, 51, 51, 1),fontSize: 16),),
+                      )
+                  ),
+                  Container(
+                    width: 30,
+                    height: 30,
+                  ),
+                ],
+              ),
+              Expanded(
+                child: AnimatedPadding(
+                  padding: MediaQuery.of(context).viewInsets,
+                  duration: Duration(milliseconds: 100),
+                  child: SingleChildScrollView(
+                    child: Container(
+                      margin: EdgeInsets.only(top: 20,bottom: 20,left: 40,right: 40),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Name',style: TextStyle(color: Color.fromRGBO(201, 201, 201, 1),fontSize: 14),),
+                          Container(
+                            margin: EdgeInsets.only(top: 10,bottom: 15),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Color.fromRGBO(226, 229, 237, 1),width: 1)
+                            ),
+                            child: TextField(
+                              style: TextStyle(color: Color.fromRGBO(51, 51, 51, 1),fontSize: 14),
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintText: 'Please fill in your personal name',
+                                  hintStyle: TextStyle(color: Color.fromRGBO(201, 201, 201, 1),fontSize: 14),
+                                  border: InputBorder.none
+                              ),
+                            ),
+                          ),
+                          Text('ID',style: TextStyle(color: Color.fromRGBO(201, 201, 201, 1),fontSize: 14),),
+                          Container(
+                            margin: EdgeInsets.only(top: 10,bottom: 15),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Color.fromRGBO(226, 229, 237, 1),width: 1)
+                            ),
+                            child: TextField(
+                              style: TextStyle(color: Color.fromRGBO(51, 51, 51, 1),fontSize: 14),
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintText: 'Please fill in your personal ID card',
+                                  hintStyle: TextStyle(color: Color.fromRGBO(201, 201, 201, 1),fontSize: 14),
+                                  border: InputBorder.none
+                              ),
+                            ),
+                          ),
+                          Text('Phone',style: TextStyle(color: Color.fromRGBO(201, 201, 201, 1),fontSize: 14),),
+                          Container(
+                            margin: EdgeInsets.only(top: 10,bottom: 15),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Color.fromRGBO(226, 229, 237, 1),width: 1)
+                            ),
+                            child: TextField(
+                              style: TextStyle(color: Color.fromRGBO(51, 51, 51, 1),fontSize: 14),
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintText: 'Please fill in your personal phone',
+                                  hintStyle: TextStyle(color: Color.fromRGBO(201, 201, 201, 1),fontSize: 14),
+                                  border: InputBorder.none
+                              ),
+                            ),
+                          ),
+                          Text('Email',style: TextStyle(color: Color.fromRGBO(201, 201, 201, 1),fontSize: 14),),
+                          Container(
+                            margin: EdgeInsets.only(top: 10,bottom: 30),
+                            decoration: BoxDecoration(
+                                border: Border.all(color: Color.fromRGBO(226, 229, 237, 1),width: 1)
+                            ),
+                            child: TextField(
+                              style: TextStyle(color: Color.fromRGBO(51, 51, 51, 1),fontSize: 14),
+                              decoration: InputDecoration(
+                                  isDense: true,
+                                  contentPadding: EdgeInsets.all(10),
+                                  hintText: 'Please fill in your personal email',
+                                  hintStyle: TextStyle(color: Color.fromRGBO(201, 201, 201, 1),fontSize: 14),
+                                  border: InputBorder.none
+                              ),
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(72, 201, 151, 1),
+                                borderRadius: BorderRadius.circular(25)
+                            ),
+                            child: Text('SUBMIT APPOINTMENT',style: TextStyle(color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold),),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
